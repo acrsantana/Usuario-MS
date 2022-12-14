@@ -11,10 +11,11 @@ import org.springframework.beans.BeanUtils;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Data @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode
-public class UsuarioDto {
+public class UsuarioDto implements Serializable {
     private UUID id;
     @NotNull @Size(min = 2, max = 100, message = "O nome precisa ter entre 2 e 100 caracteres")
     private String nome;
