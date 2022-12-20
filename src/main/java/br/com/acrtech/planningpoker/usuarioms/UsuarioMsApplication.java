@@ -28,9 +28,8 @@ public class UsuarioMsApplication {
                         .url("https://github.com/acrsantana"))
                 .title("Planning Poker/Usuario MS")
                 .version("1.0")
-                .description("Microsserviço de gestão de usuários")
+                .description("Microsserviço responsável por toda gestão de usuários da aplicação.")
                 .termsOfService("http://swagger.io/terms/")
-                .license(new License().name("Apache 2.0").url("http://springdoc.org"))
-                .summary("Microsserviço responsável por toda gestão de usuários da aplicação."));
+                .license(new License().name("Apache 2.0").url("http://springdoc.org")));
     }
 }

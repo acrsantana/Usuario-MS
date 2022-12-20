@@ -1,13 +1,18 @@
 package br.com.acrtech.planningpoker.usuarioms.service;
 
 import br.com.acrtech.planningpoker.usuarioms.dto.UsuarioDto;
+import br.com.acrtech.planningpoker.usuarioms.exception.ErroAoSalvarUsuarioException;
+import br.com.acrtech.planningpoker.usuarioms.exception.ErroEmailDuplicadoException;
 import br.com.acrtech.planningpoker.usuarioms.exception.UsuarioNaoEncontradoException;
 import br.com.acrtech.planningpoker.usuarioms.model.Usuario;
 import br.com.acrtech.planningpoker.usuarioms.repository.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.CannotCreateTransactionException;
 
 import javax.validation.Valid;
+import java.net.ConnectException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -44,9 +49,16 @@ public class UsuarioService {
         log.info("Iniciando salvamento do usuário {}", usuario.getNome());
         try {
             return new UsuarioDto(usuarioRepository.save(new Usuario(usuario)));
+        } catch (CannotCreateTransactionException e) {
+            log.error("Erro ao conectar ao banco de dados");
+            throw new ErroAoSalvarUsuarioException("Problemas ao conectar com o banco de dados, tente novamente mais tarde");
+        } catch (DataIntegrityViolationException e) {
+            log.error("O e-mail {} já existe na base de dados", usuario.getEmail());
+            throw new ErroEmailDuplicadoException("E-mail informado já existe na base de dados. Altere a informação e tente novamente.");
         } catch (Exception e) {
-            log.error("Erro ao salvar usuário");
-            throw new RuntimeException();
+            log.error("Erro desconhecido ao salvar usuário. Verifique pilha abaixo");
+            log.info(e.getMessage(), e);
+            throw new ErroAoSalvarUsuarioException("Problemas ao salvar o usuário, tente novamente mais tarde");
         }
     }
 }
