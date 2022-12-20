@@ -30,6 +30,7 @@ public class UsuarioMsApplication {
                 .version("1.0")
                 .description("Microsserviço de gestão de usuários")
                 .termsOfService("http://swagger.io/terms/")
-                .license(new License().name("Apache 2.0").url("http://springdoc.org")));
+                .license(new License().name("Apache 2.0").url("http://springdoc.org"))
+                .summary("Microsserviço responsável por toda gestão de usuários da aplicação."));
     }
 }
